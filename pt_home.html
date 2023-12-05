@@ -1,0 +1,675 @@
+<!-- home page -->
+<!--attribution for favicon: <a href="https://www.flaticon.com/free-icons/tarot" title="tarot icons">Tarot icons created by Ayub Irawan - Flaticon</a>-->
+
+<!DOCTYPE html>
+<!--<script src="thecards.js"></script>--> 
+<!-- <link rel="stylesheet" type="text/css" href="starting.css">-->
+
+<head>
+    <title>Web Tarot</title>
+    <link rel="icon" href="crescent-moon.png" type="image/x-icon">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        @font-face {
+            font-family: Bitwise;
+            src: url(Bitwise.ttf);
+        }
+
+        @font-face {
+            font-family: Coder;
+            src: url(Semi-Coder-Regular.otf);
+        }
+        
+
+        body {
+            background:black;
+        }
+/* start section of top of page */    
+        nav {
+            text-align: center;
+            align-items: center;
+        }
+
+        ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            display: inline-flex;
+        }
+
+        .headerimage {
+            height: 100px;
+        }
+
+        #pagename {
+            float: center;
+            display: block;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            font-family: 'Bitwise', sans-serif;
+            font-size: 100px;
+            font-weight: 700;
+            /*color: #B59857;*/
+            color: #F2C288;
+        }
+
+        header {
+            float: center;
+            display: block;
+            text-align: center;
+            font-family: 'Coder', sans-serif;
+            text-transform:uppercase;
+            font-size: 25px;
+            color: #B59857;
+        }
+
+
+        .subheader2 {
+            font-size: 20px;
+            font-style: italic;
+        }
+
+        h2 {
+            margin-block: unset;
+        }
+/* end top of page */
+
+/* cards */
+        .posaffirm {
+            border: 1px solid black;
+            margin: 1rem;
+            padding: 2rem 2rem;
+            padding-top: 0px;
+            text-align: center;
+            color:#F2C288;
+        }
+
+        .card-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px; /* Adjust the height based on the number of cards and your preferences */
+        }
+
+        .card {
+            width: 120px;
+            height: 170px;
+            /* transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out; */
+            transition: all 0.9s ease-out;
+            border-radius: 10px;
+            border: 1px solid black;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            background: #A6588A; 
+            position: absolute;
+        }
+
+       .shuffling {
+            animation: shuffle 2s ease-in-out;
+        }
+
+        .zoom {
+          animation: zoomIn 3s ease-in; 
+        }
+
+        .fade-out {
+           animation: fadeOut 4s ease-in-out;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @keyframes shuffle {
+            /*0% { transform: translateY(0) rotate(0deg); }
+            25% { transform: translateY(-15px) rotate(5deg); }
+            50% { transform: translateY(0) rotate(0deg); }
+            75% { transform: translateY(15px) rotate(-5deg); }
+            100% { transform: translateY(0) rotate(0deg); }*/
+            0% { transform: translateX(0); }
+            25% { transform: translateX(50px); }
+            50% { transform: translateX(0); }
+            75% { transform: translateX(-50px); }
+            100% { transform: translateX(0) ;}
+        }
+
+        @keyframes zoomIn {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1.2); }
+        }
+
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
+        }  
+
+        #deck {
+            text-align: center;
+        }
+       
+/* end of cards*/
+
+/*buttons*/
+        .buttons {
+            margin-bottom: 15px;
+            margin-top: 15px;
+        }
+
+        #shuffle {
+            margin-right: 10px;
+            box-shadow: 2px 2px 10px #D971B4;
+            font-family: 'Coder', sans-serif;
+            font-size: 17px;
+        } 
+        
+        #reset {
+            margin-left: 10px;
+            box-shadow: 2px 2px 10px #D971B4;
+            font-family: 'Coder', sans-serif;
+            font-size: 17px;
+        }
+
+        #shuffle, #reset {
+            width: 220px;
+            height: 50px;
+            border: none;
+            outline: none;
+            color: #fff;
+            background: #111;
+            cursor: pointer;
+            position: relative;
+            z-index: 0;
+            border-radius: 10px;
+        }
+
+        #shuffle:before, #reset:before {
+            content: '';
+            background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00,
+             #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+            position: absolute;
+            top: -2px;
+            left:-2px;
+            background-size: 400%;
+            z-index: -1;
+            filter: blur(5px);
+            width: calc(100% + 4px);
+            height: calc(100% + 4px);
+            animation: glowing 20s linear infinite;
+            opacity: 0;
+            transition: opacity .3s ease-in-out;
+            border-radius: 10px;
+        }
+
+        #shuffle:active, #reset:active {
+            color: #000
+        }
+
+        #shuffle:active:after, #reset:active:after {
+            background: transparent;
+        }
+
+        #shuffle:hover:before, #reset:hover:before {
+            opacity: 1;
+        }
+
+        #shuffle:after, #reset:after {
+            z-index: -1;
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: #111;
+            left: 0;
+            top: 0;
+            border-radius: 10px;
+        }
+
+        @keyframes glowing {
+            0% { background-position: 0 0; }
+            50% { background-position: 400% 0; }
+            100% { background-position: 0 0; }
+        }
+/* end buttons*/
+
+/*revealed affirmation section*/
+        .answerblock {
+            display: inline-block;
+            padding: 1rem 1rem;
+            vertical-align: middle;
+            font-family: 'Coder', sans-serif;
+        }
+/* end revealed section*/
+    </style>
+</head>
+
+<html>
+<body>
+
+<nav>
+    <ul>
+        <li><img src="tarot-header-left.png" class="headerimage"></li>
+        <li id="pagename">Web Tarot</li>
+        <li><img src="tarot-header-right.png" class="headerimage"></li>
+    </ul>
+</nav>
+
+<header>
+    <!-- <img src="tarot-header-left.png" class="headerimage"> -->
+    <h2 class="subheader">Your Digital Tarot Deck</h2>
+    <h2 class="subheader2">Ask questions, find wisdom.</h2>
+</header>
+
+<div class="posaffirm">
+
+    <div id="deck" class="card-container">
+            <div id="1" class="card" style="z-index: 38; margin-right: -575px;">
+                <span data-value="1" img src="images/1.png"></span>
+            </div>
+            <div id="2" class="card" style="z-index: 37; margin-right: -560px;">
+                <span data-value="2" img src="images/2.png"></span>
+            </div>
+            <div id="3" class="card" style="z-index: 36; margin-right: -545px;">
+                <span data-value="3" img src="images/3.png"></span>
+            </div>
+            <div id="4" class="card" style="z-index: 35; margin-right: -530px;">
+                <span data-value="4" img src="images/4.png"></span>
+            </div>
+            <div id="5" class="card" style="z-index: 34; margin-right: -515px;">
+                <span data-value="5" img src="images/5.png"></span>
+            </div>
+            <div id="6" class="card" style="z-index: 33; margin-right: -500px;">
+                <span data-value="6" img src="images/6.png"></span>
+            </div>
+            <div id="7" class="card" style="z-index: 32; margin-right: -485px;">
+                <span data-value="7" img src="images/7.png"></span>
+            </div>
+            <div id="8" class="card" style="z-index: 31; margin-right: -470px;">
+                <span data-value="8" img src="images/8.png"></span>
+            </div>
+            <div id="9" class="card" style="z-index: 30; margin-right: -455px;">
+                <span data-value="9" img src="images/9.png"></span>
+            </div>
+            <div id="10" class="card" style="z-index: 29; margin-right: -440px;">
+                <span data-value="10" img src="images/10.png"></span>
+            </div>
+            <div id="11" class="card" style="z-index: 28; margin-right: -425px;">
+                <span data-value="11" img src="images/11.png"></span>
+            </div>
+            <div id="12" class="card" style="z-index: 27; margin-right: -410px;">
+                <span data-value="12" img src="images/12.png"></span>
+            </div>
+            <div id="13" class="card" style="z-index: 26; margin-right: -395px;">
+                <span data-value="13" img src="images/13.png"></span>
+            </div>
+            <div id="14" class="card" style="z-index: 25; margin-right: -380px;">
+                <span data-value="14" img src="images/14.png"></span>
+            </div>
+            <div id="15" class="card" style="z-index: 24; margin-right: -365px;">
+                <span data-value="15" img src="images/15.png"></span>
+            </div>
+            <div id="16" class="card" style="z-index: 23; margin-right: -350px;">
+                <span data-value="16" img src="images/16.png"></span>
+            </div>
+            <div id="17" class="card" style="z-index: 22; margin-right: -335px;">
+                <span data-value="17" img src="images/17.png"></span>
+            </div>
+            <div id="18" class="card" style="z-index: 21; margin-right: -320px;">
+                <span data-value="18" img src="images/18"></span>
+            </div>
+            <div id="19" class="card" style="z-index: 20; margin-right: -305px;">
+                <span data-value="19" img src="images/19"></span>
+            </div>
+            <div id="20" class="card" style="z-index: 19; margin-right: -290px;">
+                <span data-value="20" img src="images/20.png"></span>
+            </div>
+            <div id="21" class="card" style="z-index: 18; margin-right: -275px;">
+                <span data-value="21" img src="images/21.png"></span>
+            </div>
+            <div id="22" class="card" style="z-index: 17; margin-right: -260px;">
+                <span data-value="22" img src="images/22.png"></span>
+            </div>
+            <div id="23" class="card" style="z-index: 16; margin-right: -245px;">
+                <span data-value="23" img src="images/23.png"></span>
+            </div>
+            <div id="24" class="card" style="z-index: 15; margin-right: -230px;">
+                <span data-value="24" img src="images/24.png"></span>
+            </div>
+            <div id="25" class="card" style="z-index: 14; margin-right: -215px;">
+                <span data-value="25" ima src="images/25.png"></span>
+            </div>
+            <div id="26" class="card" style="z-index: 13; margin-right: -200px;">
+                <span data-value="26" ima src="images/26.png"></span>
+            </div>
+            <div id="27" class="card" style="z-index: 12; margin-right: -185px;">
+                <span data-value="27" ima src="images/27.png"></span>
+            </div>
+            <div id="28" class="card" style="z-index: 11; margin-right: -170px;">
+                <span data-value="28" ima src="images/28.png"></span>
+            </div>
+            <div id="29" class="card" style="z-index: 10; margin-right: -155px;">
+                <span data-value="29" ima src="images/29.png"></span>
+            </div>
+            <div id="30" class="card" style="z-index: 9; margin-right: -140px;">
+                <span data-value="30" ima src="images/30.png"></span>
+            </div>
+            <div id="31" class="card" style="z-index: 8; margin-right: -125px;">
+                <span data-value="31" ima src="images/31.png"></span></div>
+            <div id="32" class="card" style="z-index: 7; margin-right: -110px;">
+                <span data-value="32" ima src="images/32.png"></span>
+            </div>
+            <div id="33" class="card" style="z-index: 6; margin-right: -95px;">
+                <span data-value="33" ima src="images/33.png"></span>
+            </div>
+            <div id="34" class="card" style="z-index: 5; margin-right: -80px;">
+                <span data-value="34" ima src="images/34.png"></span>
+            </div>
+            <div id="35" class="card" style="z-index: 4; margin-right: -65px;">
+                <span data-value="35" ima src="images/35.png"></span>
+            </div>
+            <div id="36" class="card" style="z-index: 3; margin-right: -50px;">
+                <span data-value="36" ima src="images/36.png"></span>
+            </div>
+            <div id="37" class="card" style="z-index: 2; margin-right: -35px;">
+                <span data-value="37" ima src="images/37.png"></span>
+            </div>
+            <div id="38" class="card" style="z-index: 1; margin-right: -20px;">
+                <span data-value="38" ima src="images/38.png"></span>
+            </div>
+            <div id="39" class="card" style="z-index: 0; margin-right: -5px;">
+                <span data-value="39" ima src="images/39.png"></span>
+            </div>
+            <div id="40" class="card" style="z-index: -1; margin-right: 10px;">
+                <span data-value="40" ima src="images/40.png"></span>
+            </div>
+            <div id="41" class="card" style="z-index: -2; margin-right: 25px;">
+                <span data-value="41" ima src="images/41.png"></span>
+            </div>
+            <div id="42" class="card" style="z-index: -3; margin-right: 40px;">
+                <span data-value="42" ima src="images/42.png"></span>
+            </div>
+            <div id="43" class="card" style="z-index: -4; margin-right: 55px;">
+                <span data-value="43" ima src="images/43.png"></span>
+            </div>
+            <div id="44" class="card" style="z-index: -5; margin-right: 70px;">
+                <span data-value="44" ima src="images/44.png"></span>
+            </div>
+            <div id="45" class="card" style="z-index: -6; margin-right: 85px;">
+                <span data-value="45" ima src="images/45.png"></span>
+            </div>
+            <div id="46" class="card" style="z-index: -7; margin-right: 100px;">
+                <span data-value="46" ima src="images/46.png"></span>
+            </div>
+            <div id="47" class="card" style="z-index: -8; margin-right: 115px;">
+                <span data-value="47" ima src="images/47.png"></span>
+            </div>
+            <div id="48" class="card" style="z-index: -9; margin-right: 130px;">
+                <span data-value="48" ima src="images/48.png"></span>
+            </div>
+            <div id="49" class="card" style="z-index: -10; margin-right: 145px;">
+                <span data-value="49" ima src="images/49.png"></span>
+            </div>
+            <div id="50" class="card" style="z-index: -11; margin-right: 160px;">
+                <span data-value="50" ima src="images/50.png"></span>
+            </div>
+            <div id="51" class="card" style="z-index: -12; margin-right: 175px;">
+                <span data-value="51" ima src="images/51.png"></span>
+            </div>
+            <div id="52" class="card" style="z-index: -13; margin-right: 190px;">
+                <span data-value="52" ima src="images/52.png"></span>
+            </div>
+            <div id="53" class="card" style="z-index: -14; margin-right: 205px;">
+                <span data-value="53" ima src="images/53.png"></span>
+            </div>
+            <div id="54" class="card" style="z-index: -15; margin-right: 220px;">
+                <span data-value="54" ima src="images/54.png"></span>
+            </div>
+            <div id="55" class="card" style="z-index: -16; margin-right: 235px;">
+                <span data-value="55" ima src="images/55.png"></span>
+            </div>
+            <div id="56" class="card" style="z-index: -17; margin-right: 250px;">
+                <span data-value="56" ima src="images/56.png"></span>
+            </div>
+            <div id="57" class="card" style="z-index: -18; margin-right: 265px;">
+                <span data-value="57" ima src="images/57.png"></span>
+            </div>
+            <div id="58" class="card" style="z-index: -19; margin-right: 280px;">
+                <span data-value="58" ima src="images/58.png"></span>
+            </div>
+            <div id="59" class="card" style="z-index: -20; margin-right: 295px;">
+                <span data-value="59" ima src="images/59.png"></span>
+            </div>
+            <div id="60" class="card" style="z-index: -21; margin-right: 310px;">
+                <span data-value="60" ima src="images/60.png"></span>
+            </div>
+            <div id="61" class="card" style="z-index: -22; margin-right: 325px;">
+                <span data-value="61" ima src="images/61.png"></span>
+            </div>
+            <div id="62" class="card" style="z-index: -23; margin-right: 340px;">
+                <span data-value="62" ima src="images/62.png"></span>
+            </div>
+            <div id="63" class="card" style="z-index: -24; margin-right: 355px;">
+                <span data-value="63" ima src="images/63.png"></span>
+            </div>
+            <div id="64" class="card" style="z-index: -25; margin-right: 370px;">
+                <span data-value="64" ima src="images/64.png"></span>
+            </div>
+            <div id="65" class="card" style="z-index: -26; margin-right: 385px;">
+                <span data-value="65" ima src="images/65.png"></span>
+            </div>
+            <div id="66" class="card" style="z-index: -27; margin-right: 400px;">
+                <span data-value="66" ima src="images/66.png"></span>
+            </div>
+            <div id="67" class="card" style="z-index: -28; margin-right: 415px;">
+                <span data-value="67" ima src="images/67.png"></span>
+            </div>
+            <div id="68" class="card" style="z-index: -29; margin-right: 430px;">
+                <span data-value="68" ima src="images/68.png"></span>
+            </div>
+            <div id="69" class="card" style="z-index: -30; margin-right: 445px;">
+                <span data-value="69" ima src="images/69.png"></span>
+            </div>
+            <div id="70" class="card" style="z-index: -31; margin-right: 460px;">
+                <span data-value="70" ima src="images/70.png"></span>
+            </div>
+            <div id="71" class="card" style="z-index: -32; margin-right: 475px;">
+                <span data-value="71" ima src="images/71.png"></span>
+            </div>
+            <div id="72" class="card" style="z-index: -33; margin-right: 490px;">
+                <span data-value="72" ima src="images/72.png"></span>
+            </div>
+            <div id="73" class="card" style="z-index: -34; margin-right: 505px;">
+                <span data-value="73" ima src="images/73.png"></span>
+            </div>
+            <div id="74" class="card" style="z-index: -35; margin-right: 520px;">
+                <span data-value="74" ima src="images/74.png"></span>
+            </div>
+            <div id="75" class="card" style="z-index: -36; margin-right: 535px;">
+                <span data-value="75" ima src="images/75.png"></span>
+            </div>
+            <div id="76" class="card" style="z-index: -37; margin-right: 550px;">
+                <span data-value="76" ima src="images/76.png"></span>
+            </div>
+            <div id="77" class="card" style="z-index: -38; margin-right: 565px;">
+                <span data-value="77" ima src="images/77.png"></span>
+            </div>
+            <div id="78" class="card" style="z-index: -40; margin-right: 595px;">
+                <span data-value="78" ima src="images/78.png"></span>
+            </div>
+    </div>
+
+    <div class="buttons">
+        <button id="shuffle" onclick="shuffleDeck()">Shuffle & Reveal</button>
+        <button id="reset" onclick="resetDeck()">Reset Deck</button>
+    </div>
+
+    <div class="answerblock">
+        <div class="answer">
+                <h3>Your Affirmation:</h3>
+        </div>
+
+        <div id="revealedblurb">
+            <p class="revealedtext"></p>
+        </div>
+    </div>
+</div>
+
+<script>
+
+const tarotCards = [
+    'The Fool: I am beginning a new journey, entering a phase of learning, and am open to new ideas.',
+    'The Magician: I am in charge of my destiny, in control of my future, and in balance with the forces that be.',
+    'The High Priestess: I am in tune with my intuition, trusting what I feel, and listening to my inner voice.',
+    'The Empress: I am abundant with goodness, intelligent in my choices, and seeking the best for myself.',
+    'The Emperor: I am logical and smart, knowing of the best way forward, and resourceful with the information that I have.',
+    'The Hierophant: I am in tune with my spiritual values, aware of the spiritual forces around me, and understanding of the consequences with each choice I make.',
+    'The Lovers: I am in tune with my romantic side, aware of what I want, hoping for the best.',
+    'The Chariot: I am in control of my destiny, leading myself where I know I should be, and learning from my experiences.',
+    'Strength: I am in control of my impulses, friends with my dark side, and gentle with myself.',
+    'The Hermit: I am at peace with my solitude, reflecting on my life, and growing in the space that I have.',
+    'Wheel of Fortune: I am experiencing the consequences of my actions, reaping my rewards, and learning from my mistakes.',
+    'Justice: I am aware of the consequences of my actions, bringing truth to the world, and living in balance.',
+    'The Hanged Man: I am patiently waiting for my next steps, staying strong in my circumstances, and sturdy enough to learn from this.',
+    'Death: I amundergoing a transformation, gaining unique new knowledge, and becoming a fresh version of myself.',
+    'Temperance: I am aware of the balance needed in my life, working towards equilibrium, and letting my challenges fall away.',
+    'The Devil: I am aware of my detrimental side, in tune with the advantages that I have, and getting what I want through unorthodox means.',
+    'The Tower: I am experiencing incredible change, undergoing a great transformation, and beginning a new journey.',
+    'The Star: I am planting seeds for my future, optimistic about what is to come, and growing from my experiences.',
+    'The Moon: I am in tune with my intuition, cautious of hidden dangers, and aware of my emotional state.',
+    'The Sun: I am optimistic, hopeful, and embracing life as it comes to me.',
+    'Judgement: I am aware of the changes I need to make, coming to a point of reckoning, and know that everything is for the best.',
+    'The World: I am in tune with the needs of everyone, aware of how my actions affect the world, and making my mark.',
+    'Ace of Wands: My ideas are a great seed of what will come to be, I am a true creator of my reality, and my efforts towards my ideas will be fruitful.',
+    'Two of Wands: My ideas are valuable, my success is guaranteed down this road if I work for it, and opportunities are abound.',
+    'Three of Wands: I am a visionary, full of creativity, and intellectual in my endeavours.',
+    'Four of Wands: I am free, excited, celebratory, and praising the future.',
+    'Five of Wands: I am mindful of inner or external conflict, hoping for resolution, and advocating for peace.',
+    'Six of Wands: I am rightfully proud, victorious in my goals, and gaining the praise that I deserve.',
+    'Seven of Wands: I am standing strong in what I believe, working towards my goals, and carving my path forward.',
+    'Eight of Wands: I am quick, decisive, and taking advantage of the opportunities in front of me.',
+    'Nine of Wands: I am battling against the odds, staying strong in the face of difficulties, and persevering through my challenges.',
+    'Ten of Wands: I am able to embrace rest and to seek assistance when needed.',
+    'Page of Wands: I am receiving good knowledge from someone, creating a new beginning, and entering a growth stage.',
+    'Knight of Wands: I am receiving great wisdom, about to make an advantageous connection, and create an incredible new idea.',
+    'Queen of Wands: I am in tune with my ideas and what they mean to people, creating something important, and righteously self assured.',
+    'King of Wands: I am successful in my ideas, influencing others with my concepts, and becoming an innovator.',
+    'Ace of Cups: I am abundant, compassionate, and able to embrace new emotional journeys.',
+    'Two of Cups: I am emotionally connected, aware of other peoples feelings, and able to have harmony in my relationships.',
+    'Three of Cups: I am happy in the relationships that I have created, fostering stronger connections, and celebrating the joy that I have.',
+    'Four of Cups: I am contemplating my options, trying to be wise, and mediatating on my opportunities.',
+    'Five of Cups: I am emotionally processing, trying to move on from the past, and hoping for better opportunities.',
+    'Six of Cups: I am enjoying the moment, embracing joy, and throwing caution to the wind for pleasure.',
+    'Seven of Cups: I am balancing my priorities, finding what matters most, and dissolving illusions.',
+    'Eight of Cups: I am moving on from a situation, creating better circumstances, and moving towards a happier situation.',
+    'Nine of Cups: I am embracing the blessings arounds, finding contentment in my life, and appreciating everything that I have.',
+    'Ten of Cups: I am open to fulfillment of my emotional desires, aware of the joy in my life, and leaning into positive alignment.',
+    'Page of Cups: I am open to pleasant new energy, embracing my dreams, and staying optimistic about life.',
+    'Knight of Cups: Iam emotionally in tune, able to romanticize the little things, and open to new adventures.',
+    'Queen of Cups: I am emotionally connected, able to wield my feelings for good, and naturally compassionate.',
+    'King of Cups: I am full of wisdom, generous, and balanced between my intellectual and emotional sides.',
+    'Ace of Swords: I am enterprising, intelligent, and embracing new beginnings.',
+    'Two of Swords: I am patient with my decisions, trying to create balance, and able to face problems head-on.',
+    'Three of Swords: I am sensitive and kind to my emotional state, proactively healing, and caring for myself.',
+    'Four of Swords: I am embracing restful self care, not overextending myself, and able to find comfort when needed.',
+    'Five of Swords: I am diplomatic when resolving issues, able to accept being wrong, and knowing of when my ambition is hurtful to others.',
+    'Six of Swords: I am strong enough to leave unhealthy situations, optimistic about new horizons, and accepting of what comes my way.',
+    'Seven of Swords: I am honest even when it is challenging, willing to face consequences, and aware of my questionable ethics.',
+    'Eight of Swords: I am capable of taking responsibility in my life, willing to face challenges, and emotionally resilient.',
+    'Nine of Swords: I am capable of rest and relaxation, releasing negative emotions, and embracing rejuvenation.',
+    'Ten of Swords: My mental anguish will fade, I am able to accept challenging things, and hopeful for new beginnings.',
+    'Page of Swords: I am embracing curiosity, open to new discoveries, and learning valuable lessons.',
+    'Knight of Swords: I am determined, capable, and courageous in pursuit of what I want.',
+    'Queen of Swords: I am full of wisdom, intelligence, and discernment.',
+    'King of Swords: I am strategic, confident, and embrace my inner integrity.',
+    'Ace of Pentacles: I am open to new beginnings, blessings, and forms of abundance in my life.',
+    'Two of Pentancles: I am harmonious with the flow of my life, and able to find both balance and ease.',
+    'Three of Pentacles: I am embracing the beauty of collaboration, and able to contribute to life in a meaningful way.',
+    'Four of Pentacles: I am mindful of my resources, and committed to my future security.',
+    'Five of Pentacles: I am resilient in the face of challenges, and strong enough to accept help when needed.',
+    'Six of Pentacles: I am generous to those around me, grateful for my abundance, and balanced in my energy.',
+    'Seven of Pentacles: I am patient with myself, committed to my growth, and thankful for any progress I make.',
+    'Eight of Pentacles: I am dedicated to improving my skills, and able to achieve excellence.',
+    'Nine of Pentacles: I am embracing the prosperity and abundance that I have made for myself.',
+    'Ten of Pentacles: I am able to enjoy the blessings around me, and grateful for the prosperity that is all around me.',
+    'Page of Pentacles: I am a student of life, curious about the future, and able to manifest my dreams.',
+    'Knight of Pentacles: I am focused, disciplined, and appreciate the journey to my goals.',
+    'Queen of Pentacles: I am nurturing, caring, and compassionate towards myself and others.',
+    'King of Pentacles: I am stable, grounded, and grateful for my success.'
+    ];    
+
+const originalDeck = document.getElementById('deck').innerHTML;
+
+function shuffleDeck() {
+    const deck = document.getElementById('deck');
+    const cards = Array.from(deck.getElementsByClassName('card'));
+
+    // Add the 'shuffling' class to trigger the shuffle animation
+    deck.classList.add('shuffling');
+
+    let x = Math.floor(Math.random()*79);
+    let y = x;
+    let ANSWER =(tarotCards[x])
+
+    let stringAnswer = JSON.stringify(ANSWER);
+    let printAnswer = stringAnswer.replace(/"/g, '');
+
+    document.getElementById("revealedblurb").innerHTML = printAnswer;
+    // Simulate an asynchronous operation (e.g., shuffling cards)
+    setTimeout(() => {
+        // Shuffle the order of cards in the DOM
+        cards.sort(() => Math.random() - 0.5);
+        cards.forEach((card, index) => {
+            
+            // Assign a different color to each card
+            const color = getRandomColor();
+            card.style.backgroundColor = color;
+
+            // Adjust the animation delay for the first card
+            card.style.animationDelay = `${index * 0.5}s`;
+
+            deck.appendChild(card);
+        });
+
+            // Remove the 'shuffling' class after the animation completes
+            deck.classList.remove('shuffling');
+
+        }, 1000); 
+        
+        // Adjust the timeout value based on the shuffle animation duration
+        //revealing portion: 
+        cards.forEach((card, index) => {
+            if (index === 0) {
+                // Delay the zoom effect for the first card
+                setTimeout(() => card.classList.add('zoom'), 800);
+            } else {
+                card.classList.add('fade-out');
+                setTimeout(() => card.classList.add('hidden'), 900); // Adjust the timeout value based on the fade-out animation duration
+            }
+        });
+        
+}
+
+function resetDeck() {
+    const deck = document.getElementById('deck');
+    deck.innerHTML = originalDeck;
+    document.getElementById("revealedblurb").innerHTML = null;
+}
+
+function getRandomColor() {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+
+    for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+        return color;
+}
+
+</script>
+
+</body>
+</html>
+
+
